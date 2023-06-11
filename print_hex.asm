@@ -1,12 +1,10 @@
-%include "print_string.asm"
-
 print_hex:
   pusha
-  mov cl, 3 ; Loop counter and value by which to right-shift dx
+  mov cx, 3 ; Loop counter and value by which to right-shift dx
   loop:
-    mov ax, dx
-    shr ax, cl ; Shift bytes
-    and ax, 0x000f ; isolate current hex digit
+    rol dx, 4
+    mov ax, dx ; move the hex char we want into LSB
+    and ax, 0xf ; isolate current hex digit
     call hex_to_ascii
     ; Calculate offset manually
     mov bx, HEX_OUT + 5
