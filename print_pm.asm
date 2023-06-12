@@ -1,4 +1,4 @@
-[BITS 32] ; needs to be set to bits 32 because the bin/raw format generates code for 16 bit architecture
+[bits 32] ; needs to be set to bits 32 because the bin/raw format generates code for 16 bit architecture
 
 VIDEO_MEMORY equ 0xb8000 ; MMIO location for VGA
 WHITE_ON_BLACK equ 0x0f
