@@ -22,12 +22,12 @@ flag_set:
   shr ax, 8
   mov dx, ax
   mov bx, error_msgA
-  call print_string
-  call print_line
-  mov bx, flag_value_msg
-  call print_string
-  call print_hex
-  call print_line
+  ;call print_string
+  ;call print_line
+  ;mov bx, flag_value_msg
+  ;call print_string
+  ;call print_hex
+  ;call print_line
   jmp $
 
 sector_count:
