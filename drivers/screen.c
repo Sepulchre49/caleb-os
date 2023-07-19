@@ -1,7 +1,7 @@
 #include "screen.h"
 #include "../kernel/low_level.h"
 
-void print_char(char character, int row, int col, char attribute_byte) {
+int print_char(char character, int row, int col, char attribute_byte) {
     // Create a pointer to video memory
     unsigned char *vidmem = (unsigned char *) VIDEO_ADDRESS;
     
@@ -20,19 +20,20 @@ void print_char(char character, int row, int col, char attribute_byte) {
 
     // If the character is a newline, we should advance the cursor to the end of the current line
     if (character == '\n') {
-        int row = get_offset_row(offset);
+        row = get_offset_row(offset);
         offset = get_screen_offset(row, 79);
     } 
     // Otherwise, write the character to screen
     else {
         vidmem[offset] = character;
         vidmem[offset+1] = attribute_byte;
+        // Advance the cursor
+        offset += 2;
     }
 
-    // Advance the cursor
-    offset += 2;
     //offset = handle_scrolling(offset);
     set_cursor(offset);
+    return offset;
 }
 
 int get_screen_offset(int row, int col) {
@@ -54,7 +55,7 @@ int get_cursor() {
 }
 
 void set_cursor(int offset) {
-    // Set memory offset to a character offset)
+    // Set memory offset to a character offset
     offset /= 2; 
     // Tell the port we're writing to the high byte
     port_byte_out(REG_SCREEN_CTRL, 14);
@@ -63,17 +64,22 @@ void set_cursor(int offset) {
     // Tell the port we're writing the low byte
     port_byte_out(REG_SCREEN_CTRL, 15);
     // Now set the low byte
-    port_byte_out(REG_SCREEN_DATA, (unsigned char) offset);
+    port_byte_out(REG_SCREEN_DATA, (unsigned char) (offset & 0xff));
 }
 
 void print_at(char *message, int row, int col) {
     int offset;
     if (row >= 0 & col >= 0)
-        set_cursor(get_screen_offset(row, col));
+        offset = get_screen_offset(row, col);
+    else {
+        offset = get_cursor();
+        row = get_offset_row(offset);
+        col = get_offset_col(offset);
+    }
 
     int i=0;
     while (message[i] != 0) {
-        print_char(message[i++], row, col, WHITE_ON_BLACK);
+        offset = print_char(message[i++], row, col, WHITE_ON_BLACK);
         row = get_offset_row(offset);
         col = get_offset_col(offset);
     }
