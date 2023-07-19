@@ -1,5 +1,6 @@
 #include "screen.h"
 #include "../kernel/low_level.h"
+#include "../kernel/utils.h"
 
 int print_char(char character, int row, int col, char attribute_byte) {
     // Create a pointer to video memory
@@ -31,7 +32,7 @@ int print_char(char character, int row, int col, char attribute_byte) {
         offset += 2;
     }
 
-    //offset = handle_scrolling(offset);
+    offset = handle_scrolling(offset);
     set_cursor(offset);
     return offset;
 }
@@ -60,7 +61,7 @@ void set_cursor(int offset) {
     // Tell the port we're writing the high byte
     port_byte_out(REG_SCREEN_CTRL, 14);
     // Write the high byte
-    port_byte_out(REG_SCREEN_DATA, (unsigned char) (offset >> 8));
+    port_byte_out(REG_SCREEN_DATA, (unsigned char) (offset >> 8)); // make sure to do shift BEFORE casting
     // Tell the port we're writing the low byte
     port_byte_out(REG_SCREEN_CTRL, 15);
     // Now write the low byte
@@ -85,12 +86,32 @@ void print(char *message) {
 void clear_screen()
 {
     unsigned char *vidmem = (unsigned char *) VIDEO_ADDRESS;
-    const int END_OF_SCREEN = get_screen_offset(MAX_ROWS, MAX_COLS);
     for (int i=0; i<END_OF_SCREEN; i+=2) {
         vidmem[i] = 0x0;
         vidmem[i+1] = 0x0;
     }
     set_cursor(0);
+}
+
+int handle_scrolling(int cursor) {
+    // If cursor goes beyond the end of screen memory
+    if (cursor >= END_OF_SCREEN) {
+        const unsigned char *vidmem = (unsigned char*) VIDEO_ADDRESS;
+        // Copy line by line
+        for (int row=0; row<MAX_ROWS; row++) {
+            int currLine = vidmem + get_screen_offset(row, 0);
+            int nextLine = vidmem + get_screen_offset(row+1, 0);
+            mem_copy(nextLine, currLine, MAX_COLS*2);
+        }
+        /* int lastLine = get_screen_offset(MAX_ROWS-1, 0);
+        for (int i=lastLine; i<END_OF_SCREEN; i++) {
+            vidmem[lastLine] = 0;
+        } */
+        // Move cursor to last row, first col
+        return get_screen_offset(MAX_ROWS-1, 0);
+    } else {
+        return cursor;
+    }
 }
 
 int get_offset_row(int offset) {
