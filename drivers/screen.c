@@ -21,7 +21,7 @@ int print_char(char character, int row, int col, char attribute_byte) {
     // If the character is a newline, we should advance the cursor to the end of the current line
     if (character == '\n') {
         row = get_offset_row(offset);
-        offset = get_screen_offset(row, 79);
+        offset = get_screen_offset(row+1, 0);
     } 
     // Otherwise, write the character to screen
     else {
@@ -86,6 +86,17 @@ void print_at(char *message, int row, int col) {
 }
 void print(char *message) {
     print_at(message, -1, -1);
+}
+
+void clear_screen()
+{
+    unsigned char *vidmem = (unsigned char *) VIDEO_ADDRESS;
+    const int END_OF_SCREEN = get_screen_offset(MAX_ROWS, MAX_COLS);
+    for (int i=0; i<END_OF_SCREEN; i+=2) {
+        vidmem[i] = 0x0;
+        vidmem[i+1] = 0x0;
+    }
+    set_cursor(0);
 }
 
 int get_offset_row(int offset) {

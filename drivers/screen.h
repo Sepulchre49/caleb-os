@@ -24,4 +24,5 @@ void clear_screen();
 
 int get_offset_row(int offset);
 int get_offset_col(int offset);
+
 #endif
