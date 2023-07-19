@@ -11,14 +11,14 @@ int print_char(char character, int row, int col, char attribute_byte) {
     
     // Calculate memory location for the screen location
     int offset;
-    // If screen co-ords are non-negative, convert it to an offset
+    // If screen co-ords are supplied, convert it to an offset
     if (row >= 0 && col >= 0)
         offset = get_screen_offset(row, col);
     // Otherwise, write at the cursor position
     else
         offset = get_cursor();
 
-    // If the character is a newline, we should advance the cursor to the end of the current line
+    // If the character is a newline, we should advance the cursor to the start of the next line
     if (character == '\n') {
         row = get_offset_row(offset);
         offset = get_screen_offset(row+1, 0);
@@ -55,35 +55,29 @@ int get_cursor() {
 }
 
 void set_cursor(int offset) {
-    // Set memory offset to a character offset
+    // Convert memory offset to a character offset
     offset /= 2; 
-    // Tell the port we're writing to the high byte
+    // Tell the port we're writing the high byte
     port_byte_out(REG_SCREEN_CTRL, 14);
     // Write the high byte
     port_byte_out(REG_SCREEN_DATA, (unsigned char) offset >> 8);
     // Tell the port we're writing the low byte
     port_byte_out(REG_SCREEN_CTRL, 15);
-    // Now set the low byte
+    // Now write the low byte
     port_byte_out(REG_SCREEN_DATA, (unsigned char) (offset & 0xff));
 }
 
 void print_at(char *message, int row, int col) {
     int offset;
+    // If co-ords are supplied, set the cursor to those coords
     if (row >= 0 & col >= 0)
-        offset = get_screen_offset(row, col);
-    else {
-        offset = get_cursor();
-        row = get_offset_row(offset);
-        col = get_offset_col(offset);
-    }
+        set_cursor(get_screen_offset(row, col));
 
     int i=0;
-    while (message[i] != 0) {
-        offset = print_char(message[i++], row, col, WHITE_ON_BLACK);
-        row = get_offset_row(offset);
-        col = get_offset_col(offset);
-    }
+    while (message[i] != 0) 
+        print_char(message[i++], -1, -1, WHITE_ON_BLACK);
 }
+// Convenience method, user should use this as the public API
 void print(char *message) {
     print_at(message, -1, -1);
 }
