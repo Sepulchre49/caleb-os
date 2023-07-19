@@ -1,4 +1,5 @@
 void mem_copy(unsigned char *source, unsigned char *dest, int size) {
-    for (int i=source; i<dest; i++)
+    const int MAX_COLS = 80;
+    for (int i=0; i<2*MAX_COLS; i++)
         dest[i] = source[i];
 }
