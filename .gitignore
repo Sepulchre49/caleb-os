@@ -1,3 +1,4 @@
 *.bin
 *.o
 caleb-os.code-workspace
+kernel.elf
