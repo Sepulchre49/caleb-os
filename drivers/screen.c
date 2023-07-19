@@ -60,7 +60,7 @@ void set_cursor(int offset) {
     // Tell the port we're writing the high byte
     port_byte_out(REG_SCREEN_CTRL, 14);
     // Write the high byte
-    port_byte_out(REG_SCREEN_DATA, (unsigned char) offset >> 8);
+    port_byte_out(REG_SCREEN_DATA, (unsigned char) (offset >> 8));
     // Tell the port we're writing the low byte
     port_byte_out(REG_SCREEN_CTRL, 15);
     // Now write the low byte
