@@ -7,7 +7,7 @@ OBJ = ${C_SOURCES:.c=.o}
 CC = /usr/local/i386elfgcc/bin/i386-elf-gcc
 GDB = /usr/bin/gdb
 # -g: Use debugging symbols in gcc
-CFLAGS = -g
+CFLAGS = -g3
 
 # First rule is run by default
 os-image.bin: boot/boot_kernel.bin kernel.bin
@@ -28,8 +28,7 @@ run: os-image.bin
 # Open the connection to qemu and load our kernel-object file with symbols
 debug: os-image.bin kernel.elf
 	qemu-system-i386 -s -S -fda os-image.bin &
-	${GDB} -ex "target remote localhost:1234" -ex "symbol-file kernel.elf"
-
+	${GDB}
 # Generic rules for wildcards
 # To make an object, always compile from its .c
 %.o: %.c ${HEADERS}
