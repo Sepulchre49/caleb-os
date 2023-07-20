@@ -1,7 +1,7 @@
 %macro ISR_NO_ERRCODE 1
     [global isr%1]
     isr%1:
-        cli
+        cli                 ; Disable interrupts while running int handler
         push byte 0
         push byte %1
         jmp isr_common_stub
@@ -10,7 +10,7 @@
 %macro ISR_ERRCODE 1
     [global isr%1]
     isr%1:
-        cli
+        cli                 ; Disable interrupts while running int handler
         push byte %1
         jmp isr_common_stub
 %endmacro
@@ -52,26 +52,26 @@ ISR_NO_ERRCODE 31
 [extern isr_handler]
 
 isr_common_stub:
-    pusha
+    pusha               ; Save all registers to the stack
 
-    mov ax, ds
+    mov ax, ds          ; Save the data segment to the stack
     push eax
 
-    mov ax, 0x10
+    mov ax, 0x10        ; Move all segment registers to 0x10
     mov ds, ax
     mov es, ax
     mov fs, ax
     mov gs, ax
 
-    call isr_handler
+    call isr_handler    ; Call the isr_handler (defined in isr.c)
 
-    pop eax
+    pop eax             ; Restore segment registers
     mov ds, ax
     mov es, ax
     mov fs, ax
     mov gs, ax
 
-    popa
+    popa                ; Restore all other registers and stack
     add esp, 8
-    sti
-    iret
+    sti                 ; Turn interrupts back on
+    iret                ; Return from interrupt handler
