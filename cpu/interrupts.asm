@@ -57,7 +57,7 @@ isr_common_stub:
     mov ax, ds          ; Save the data segment to the stack
     push eax
 
-    mov ax, 0x10        ; Move all segment registers to 0x10
+    mov ax, 0x10        ; Move all segment registers to 0x10 (kernel data segment descriptor)
     mov ds, ax
     mov es, ax
     mov fs, ax
