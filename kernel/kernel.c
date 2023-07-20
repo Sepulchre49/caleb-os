@@ -10,4 +10,7 @@ void main() {
     print("Okay!\n");
 
     init_idt();
+
+    asm volatile ("int $0x3");
+    asm volatile ("int $0x4");
 }

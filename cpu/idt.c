@@ -47,6 +47,8 @@ void init_idt() {
     idt_set_gate(29, (u32int)isr29, 0x08, 0x8e);
     idt_set_gate(30, (u32int)isr30, 0x08, 0x8e);
     idt_set_gate(31, (u32int)isr31, 0x08, 0x8e);
+
+    idt_flush((u32int) &idt_ptr);
 }
 
 static void idt_set_gate(u8int idx, u32int isr_ptr, u16int selector, u8int flags) {
