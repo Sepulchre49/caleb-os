@@ -8,9 +8,10 @@ idt_entry_t idt_entries[256];
 idt_ptr_t idt_ptr;
 
 void init_idt() {
-    idt_ptr.limit = sizeof(idt_entry_t) * 256 - 1
+    idt_ptr.limit = sizeof(idt_entry_t) * 256 - 1;
     idt_ptr.base = (u32int) &idt_entries;
 
+    // Clear garbage from interrupt routine vector
     mem_set(&idt_entries, 0, sizeof(idt_entry_t)*256);
 
     // Initialize the idt_entry for each slot in the vector
@@ -48,13 +49,13 @@ void init_idt() {
     idt_set_gate(31, (u32int)isr31, 0x08, 0x8e);
 }
 
-void idt_set_gate(u8int idx, u32int isr_ptr, u16int selector, u8int flags) {
+static void idt_set_gate(u8int idx, u32int isr_ptr, u16int selector, u8int flags) {
     idt_entry_t entry = {
        .base_lo = isr_ptr & 0xffff,
-       .base_hi = isr_ptr >> 16 
        .sel     = selector,
        .always0 = 0,
        .flags   = flags,
-    }
+       .base_hi = isr_ptr >> 16 
+    };
     idt_entries[idx] = entry;
 }
