@@ -11,6 +11,8 @@ void main() {
 
     init_idt();
 
-    asm volatile ("int $0x3");
-    asm volatile ("int $0x4");
+    asm("int $0x1");
+    asm("int $0x2");
+    asm("int $0x3");
+    asm("int $0x4");
 }
