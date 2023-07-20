@@ -7,8 +7,8 @@ Operating system written in C and x86 Assembly, created for Ahmed Banafa's CS 42
 *os-tutorial* by Carlos Fenollosa (https://github.com/cfenollosa/os-tutorial)  
 *Roll your own toy UNIX-clone OS* by James Molloy (http://www.jamesmolloy.co.uk/tutorial_html/)  
 
-# Building
-Simply run `make` with an appropriate gcc compiler installed.
-
-# Running
-I use `qemu-system-x86_64 os-image` to run
+# Building & Running
+This project was built for an i386 processor. You'll need a gcc cross-compiler and binutils targeting this architecture to build  
+Further, you'll need qemu-system-i386 installed to run  
+Run `make run` to automatically build the os-image and launch in qemu  
+Run `make debug` to automatically build with debugging symbols, launch in qemu with -S flag, and launch gdb. If you have the .gdb file that comes with this repository, gdb should attach to the qemu instance, load the debugging symbols, and set a breakpoint in the kernel's main function  
