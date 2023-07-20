@@ -1,4 +1,5 @@
 #include "../drivers/screen.h"
+#include "../cpu/idt.h"
 
 void main() {
     clear_screen();
@@ -7,4 +8,6 @@ void main() {
         print("Derp\n");
     }
     print("Okay!\n");
+
+    init_idt();
 }
