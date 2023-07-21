@@ -79,7 +79,7 @@ isr_common_stub:
 ; Creating a new stub for IRQ, first parameter is IRQ number,
 ; second parameter is the ISR its remapped to
 %macro IRQ 2
-    global irq%1
+    [global irq%1]
     irq%1:
         cli
         push byte 0
@@ -122,9 +122,9 @@ irq_common_stub:
 
     pop ebx
     mov ds, bx
-    mov es, dx
-    mov fs, dx
-    mov gs, dx
+    mov es, bx
+    mov fs, bx
+    mov gs, bx
 
     popa
     add esp, 8
