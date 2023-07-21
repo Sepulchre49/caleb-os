@@ -27,16 +27,16 @@ void init_idt() {
     port_byte_out(PIC2_DATA,    0x00);
 
     // Initialize the idt_entry for each slot in the vector
-    idt_set_gate(0, (u32int)isr0, 0x08, 0x8e);
-    idt_set_gate(1, (u32int)isr1, 0x08, 0x8e);
-    idt_set_gate(2, (u32int)isr2, 0x08, 0x8e);
-    idt_set_gate(3, (u32int)isr3, 0x08, 0x8e);
-    idt_set_gate(4, (u32int)isr4, 0x08, 0x8e);
-    idt_set_gate(5, (u32int)isr5, 0x08, 0x8e);
-    idt_set_gate(6, (u32int)isr6, 0x08, 0x8e);
-    idt_set_gate(7, (u32int)isr7, 0x08, 0x8e);
-    idt_set_gate(8, (u32int)isr8, 0x08, 0x8e);
-    idt_set_gate(9, (u32int)isr9, 0x08, 0x8e);
+    idt_set_gate(0,  (u32int)isr0,  0x08, 0x8e);
+    idt_set_gate(1,  (u32int)isr1,  0x08, 0x8e);
+    idt_set_gate(2,  (u32int)isr2,  0x08, 0x8e);
+    idt_set_gate(3,  (u32int)isr3,  0x08, 0x8e);
+    idt_set_gate(4,  (u32int)isr4,  0x08, 0x8e);
+    idt_set_gate(5,  (u32int)isr5,  0x08, 0x8e);
+    idt_set_gate(6,  (u32int)isr6,  0x08, 0x8e);
+    idt_set_gate(7,  (u32int)isr7,  0x08, 0x8e);
+    idt_set_gate(8,  (u32int)isr8,  0x08, 0x8e);
+    idt_set_gate(9,  (u32int)isr9,  0x08, 0x8e);
     idt_set_gate(10, (u32int)isr10, 0x08, 0x8e);
     idt_set_gate(11, (u32int)isr11, 0x08, 0x8e);
     idt_set_gate(12, (u32int)isr12, 0x08, 0x8e);
@@ -60,16 +60,16 @@ void init_idt() {
     idt_set_gate(30, (u32int)isr30, 0x08, 0x8e);
     idt_set_gate(31, (u32int)isr31, 0x08, 0x8e);
     // User defined IRQs
-    idt_set_gate(32, (u32int)irq0, 0x08, 0x8e);
-    idt_set_gate(33, (u32int)irq1, 0x08, 0x8e);
-    idt_set_gate(34, (u32int)irq2, 0x08, 0x8e);
-    idt_set_gate(35, (u32int)irq3, 0x08, 0x8e);
-    idt_set_gate(36, (u32int)irq4, 0x08, 0x8e);
-    idt_set_gate(37, (u32int)irq5, 0x08, 0x8e);
-    idt_set_gate(38, (u32int)irq6, 0x08, 0x8e);
-    idt_set_gate(39, (u32int)irq7, 0x08, 0x8e);
-    idt_set_gate(40, (u32int)irq8, 0x08, 0x8e);
-    idt_set_gate(41, (u32int)irq9, 0x08, 0x8e);
+    idt_set_gate(32, (u32int)irq0,  0x08, 0x8e);
+    idt_set_gate(33, (u32int)irq1,  0x08, 0x8e);
+    idt_set_gate(34, (u32int)irq2,  0x08, 0x8e);
+    idt_set_gate(35, (u32int)irq3,  0x08, 0x8e);
+    idt_set_gate(36, (u32int)irq4,  0x08, 0x8e);
+    idt_set_gate(37, (u32int)irq5,  0x08, 0x8e);
+    idt_set_gate(38, (u32int)irq6,  0x08, 0x8e);
+    idt_set_gate(39, (u32int)irq7,  0x08, 0x8e);
+    idt_set_gate(40, (u32int)irq8,  0x08, 0x8e);
+    idt_set_gate(41, (u32int)irq9,  0x08, 0x8e);
     idt_set_gate(42, (u32int)irq10, 0x08, 0x8e);
     idt_set_gate(43, (u32int)irq11, 0x08, 0x8e);
     idt_set_gate(44, (u32int)irq12, 0x08, 0x8e);
