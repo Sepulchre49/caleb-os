@@ -23,13 +23,13 @@ ISR_NO_ERRCODE 4
 ISR_NO_ERRCODE 5
 ISR_NO_ERRCODE 6
 ISR_NO_ERRCODE 7
-ISR_ERRCODE 8
+ISR_ERRCODE    8
 ISR_NO_ERRCODE 9
-ISR_ERRCODE 10
-ISR_ERRCODE 11
-ISR_ERRCODE 12
-ISR_ERRCODE 13
-ISR_ERRCODE 14
+ISR_ERRCODE    10
+ISR_ERRCODE    11
+ISR_ERRCODE    12
+ISR_ERRCODE    13
+ISR_ERRCODE    14
 ISR_NO_ERRCODE 15
 ISR_NO_ERRCODE 16
 ISR_NO_ERRCODE 17
@@ -86,6 +86,23 @@ isr_common_stub:
         push byte %2
         jmp irq_common_stub
 %endmacro
+
+IRQ  0, 32
+IRQ  1, 33
+IRQ  2, 34
+IRQ  3, 35
+IRQ  4, 36
+IRQ  5, 37
+IRQ  6, 38
+IRQ  7, 39
+IRQ  8, 40
+IRQ  9, 41
+IRQ 10, 42
+IRQ 11, 43
+IRQ 12, 44
+IRQ 13, 45
+IRQ 14, 46
+IRQ 15, 47
 
 [extern irq_handler]
 ; Common IRQ stub, saves CPU state, sets up kernel mode segs,
