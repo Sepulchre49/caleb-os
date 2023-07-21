@@ -1,6 +1,7 @@
-#include "types.h"
 #ifndef ISR_H
 #define ISR_H
+
+#include "types.h"
 
 #define IRQ0 32
 #define IRQ1 33

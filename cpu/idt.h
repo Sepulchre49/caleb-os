@@ -1,7 +1,7 @@
-#include "types.h"
-
 #ifndef IDT_H
 #define IDT_H
+
+#include "types.h"
 
 #define PIC1            0x20      // Base address of controlling PIC
 #define PIC2            0xa0      // Base address of secondary PIC
