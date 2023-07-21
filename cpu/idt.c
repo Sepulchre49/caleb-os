@@ -14,6 +14,18 @@ void init_idt() {
     // Clear garbage from interrupt routine vector
     mem_set(&idt_entries, 0, sizeof(idt_entry_t)*256);
 
+    // Remap irq table to prevent it from conflicting with CPU interrupts
+    port_byte_out(PIC1_COMMAND, 0x11); // Send both PICS the "initialize" command
+    port_byte_out(PIC2_COMMAND, 0x11);
+    port_byte_out(PIC1_DATA,    0x20); // Send both PICS their new vector offset
+    port_byte_out(PIC2_DATA,    0x28);
+    port_byte_out(PIC1_DATA,    0x04); // Send both PICS the cascade info
+    port_byte_out(PIC2_DATA,    0x02);
+    port_byte_out(PIC1_DATA,    0x01); // Have both PICS use x86 mode
+    port_byte_out(PIC2_DATA,    0x01);
+    port_byte_out(PIC1_DATA,    0x00); // Don't know what this does. Might be resetting Interrupt Mask Registers??
+    port_byte_out(PIC2_DATA,    0x00);
+
     // Initialize the idt_entry for each slot in the vector
     idt_set_gate(0, (u32int)isr0, 0x08, 0x8e);
     idt_set_gate(1, (u32int)isr1, 0x08, 0x8e);

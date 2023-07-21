@@ -2,6 +2,14 @@
 
 #ifndef IDT_H
 #define IDT_H
+
+#define PIC1            0x20      // Base address of controlling PIC
+#define PIC2            0xa0      // Base address of secondary PIC
+#define PIC1_COMMAND    PIC1
+#define PIC1_DATA       (PIC1+1)
+#define PIC2_COMMAND    PIC2
+#define PIC2_DATA       (PIC2+1)
+
 // Describes an interrupt gate
 struct idt_entry {
     u16int base_lo;    // Lower 16 bits of interrupt routine address
