@@ -10,10 +10,10 @@ void main() {
     print("Okay!\n");
 
     init_idt();
+    init_timer(50);
 
     asm("int $0x1");
     asm("int $0x2");
     asm("int $0x3");
     asm("int $0x4");
-    asm("int $32");
 }

@@ -2,6 +2,7 @@
 #include "isr.h"
 #include "../drivers/screen.h"   
 #include "../kernel/utils.h"
+#include "../kernel/low_level.h"
 
 u32int tick = 0;
 
@@ -15,7 +16,7 @@ static void timer_callback(registers_t regs) {
 }
 
 void init_timer(u32int freq) {
-    register_interrupt_handler(IRQ0, &timer_callback);
+    register_interrupt_handler(IRQ0, timer_callback);
 
     u32int divisor = 1193180 / freq;
 
