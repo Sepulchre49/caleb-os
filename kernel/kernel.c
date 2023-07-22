@@ -15,5 +15,4 @@ void main() {
     asm("int $0x2");
     asm("int $0x3");
     asm("int $0x4");
-    asm("int $32");
 }
