@@ -10,6 +10,7 @@ void main() {
     print("Okay!\n");
 
     init_idt();
+    asm("sti");
     init_timer(50);
 
     asm("int $0x1");
