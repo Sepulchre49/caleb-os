@@ -1,6 +1,7 @@
-; Ensures jumping to the correct entry point of the kernel
-[bits 32]      ; By this point, we're in 32 bit protected mode
-[extern main]  ; Declare that we're referencing an external symbol 'main'
+global _start;
+[bits 32]
 
-call main ; invoke main() in our C kernel
-jmp $     ; Hang forever when returning from the kernel
+_start:
+    [extern kernel_main] ; Define calling point. Must have same name as kernel.c 'main' function
+    call kernel_main ; Calls the C function. The linker will know where it is placed in memory
+    jmp $

@@ -1,21 +1,40 @@
+#include "../cpu/isr.h"
 #include "../drivers/screen.h"
-#include "../cpu/idt.h"
-#include "../cpu/timer.h"
+#include "kernel.h"
+#include "../libc/string.h"
+#include "../libc/mem.h"
+#include <stdint.h>
 
-void main() {
-    clear_screen();
-    print("Hello, world!\n");
-    for (int i = 0; i < MAX_ROWS-2*1; i++) {
-        print("Derp\n");
+void kernel_main() {
+    isr_install();
+    irq_install();
+
+    asm("int $2");
+    asm("int $3");
+
+    kprint("Type something, it will go through the kernel\n"
+        "Type END to halt the CPU or PAGE to request a kmalloc()\n> ");
+}
+
+void user_input(char *input) {
+    if (strcmp(input, "END") == 0) {
+        kprint("Stopping the CPU. Bye!\n");
+        asm volatile("hlt");
+    } else if (strcmp(input, "PAGE") == 0) {
+        /* Lesson 22: Code to test kmalloc, the rest is unchanged */
+        uint32_t phys_addr;
+        uint32_t page = kmalloc(1000, 1, &phys_addr);
+        char page_str[16] = "";
+        hex_to_ascii(page, page_str);
+        char phys_str[16] = "";
+        hex_to_ascii(phys_addr, phys_str);
+        kprint("Page: ");
+        kprint(page_str);
+        kprint(", physical address: ");
+        kprint(phys_str);
+        kprint("\n");
     }
-    print("Okay!\n");
-
-    init_idt();
-    asm("sti");
-    init_timer(50);
-
-    asm("int $0x1");
-    asm("int $0x2");
-    asm("int $0x3");
-    asm("int $0x4");
+    kprint("You said: ");
+    kprint(input);
+    kprint("\n> ");
 }
