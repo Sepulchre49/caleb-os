@@ -1,6 +1,6 @@
 #include "screen.h"
-#include "../kernel/low_level.h"
-#include "../kernel/utils.h"
+#include "../cpu/ports.h"
+#include "../libc/utils.h"
 
 int print_char(char character, int row, int col, char attribute_byte) {
     // Create a pointer to video memory

@@ -1,8 +1,8 @@
 #include "timer.h"
 #include "isr.h"
+#include "ports.H"
 #include "../drivers/screen.h"   
-#include "../kernel/utils.h"
-#include "../kernel/low_level.h"
+#include "../libc/utils.h"
 
 u32int tick = 0;
 
