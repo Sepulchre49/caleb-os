@@ -1,6 +1,6 @@
 #include "idt.h"
 #include "ports.h"
-#include "../libc/utils.h"
+#include "../libc/mem.h"
 
 extern void idt_flush(u32int address);
 static void idt_set_gate(u8int idx, u32int isr_ptr, u16int selector, u8int flags);
