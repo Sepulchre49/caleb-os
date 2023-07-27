@@ -1,5 +1,6 @@
 #include "../drivers/screen.h"
 #include "../cpu/idt.h"
+#include "../cpu/timer.h"
 
 void main() {
     clear_screen();
