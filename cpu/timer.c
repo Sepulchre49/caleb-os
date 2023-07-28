@@ -1,6 +1,6 @@
 #include "timer.h"
 #include "isr.h"
-#include "ports.H"
+#include "ports.h"
 #include "../drivers/screen.h"   
 #include "../libc/string.h"
 

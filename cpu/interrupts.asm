@@ -1,3 +1,59 @@
+; C interrupt handlers
+[extern isr_handler] 
+[extern irq_handler] 
+
+isr_common_stub:
+    pusha               ; Save all registers to the stack
+
+    mov ax, ds          ; Save the data segment to the stack
+    push eax
+
+    mov ax, 0x10        ; Move all segment registers to 0x10 (kernel data segment descriptor)
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+
+    call isr_handler    ; Call the isr_handler (defined in isr.c)
+
+    pop eax             ; Restore segment registers
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+
+    popa                ; Restore all other registers and stack
+    add esp, 8
+    sti                 ; Turn interrupts back on
+    iret                ; Return from interrupt handler
+
+; Common IRQ stub, saves CPU state, sets up kernel mode segs,
+; calls the C fault handler, restores the stack frame
+irq_common_stub:
+    pusha
+    mov ax, ds
+    push eax
+
+    mov ax, 0x10 ; Kernel seg descriptor
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+
+    call irq_handler
+
+    pop ebx
+    mov ds, bx
+    mov es, dx
+    mov fs, dx
+    mov gs, dx
+
+    popa
+    add esp, 8
+    sti
+    iret
+
+; ISR macro, these DONT push an error code onto the stack
 %macro ISR_NO_ERRCODE 1
     [global isr%1]
     isr%1:
@@ -7,6 +63,7 @@
         jmp isr_common_stub
 %endmacro
 
+; ISR macro, these DO push an error code onto the stack
 %macro ISR_ERRCODE 1
     [global isr%1]
     isr%1:
@@ -15,6 +72,18 @@
         jmp isr_common_stub
 %endmacro
 
+; Creating a new stub for IRQ, first parameter is IRQ number,
+; second parameter is the ISR its remapped to
+%macro IRQ 2
+    global irq%1
+    irq%1:
+        cli
+        push byte 0
+        push byte %2
+        jmp irq_common_stub
+%endmacro
+
+; Create all ISRs for CPU exceptions
 ISR_NO_ERRCODE 0
 ISR_NO_ERRCODE 1
 ISR_NO_ERRCODE 2
@@ -48,45 +117,7 @@ ISR_NO_ERRCODE 29
 ISR_NO_ERRCODE 30
 ISR_NO_ERRCODE 31
 
-; Defined in isr.c
-[extern isr_handler]
-
-isr_common_stub:
-    pusha               ; Save all registers to the stack
-
-    mov ax, ds          ; Save the data segment to the stack
-    push eax
-
-    mov ax, 0x10        ; Move all segment registers to 0x10 (kernel data segment descriptor)
-    mov ds, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax
-
-    call isr_handler    ; Call the isr_handler (defined in isr.c)
-
-    pop eax             ; Restore segment registers
-    mov ds, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax
-
-    popa                ; Restore all other registers and stack
-    add esp, 8
-    sti                 ; Turn interrupts back on
-    iret                ; Return from interrupt handler
-
-; Creating a new stub for IRQ, first parameter is IRQ number,
-; second parameter is the ISR its remapped to
-%macro IRQ 2
-    global irq%1
-    irq%1:
-        cli
-        push byte 0
-        push byte %2
-        jmp irq_common_stub
-%endmacro
-
+; Create all IRQs for user-defined interrupts
 IRQ  0, 32
 IRQ  1, 33
 IRQ  2, 34
@@ -103,30 +134,3 @@ IRQ 12, 44
 IRQ 13, 45
 IRQ 14, 46
 IRQ 15, 47
-
-[extern irq_handler]
-; Common IRQ stub, saves CPU state, sets up kernel mode segs,
-; calls the C fault handler, restores the stack frame
-irq_common_stub:
-    pusha
-    mov ax, ds
-    push eax
-
-    mov ax, 0x10 ; Kernel seg descriptor
-    mov ds, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax
-
-    call irq_handler
-
-    pop ebx
-    mov ds, bx
-    mov es, dx
-    mov fs, dx
-    mov gs, dx
-
-    popa
-    add esp, 8
-    sti
-    iret
