@@ -1,4 +1,4 @@
 target remote localhost:1234
 symbol-file kernel.elf
-b kernel/kernel.c:6
+b keyboard_callback
 continue
