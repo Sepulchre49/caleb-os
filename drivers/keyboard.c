@@ -4,14 +4,11 @@
 #include "../cpu/isr.h"
 #include "../libc/string.h"
 
+void delegate_keycode(u8int scancode);
+
 static void keyboard_callback(registers_t r) {
     u8int scancode = port_byte_in(KEYBOARD_DATA_PORT);
-    char string[256];    
-    int_to_ascii(scancode, string);
     delegate_keycode(scancode);
-    print("Keyboard interrupt detected! ");
-    print(string);
-    print("\n");
 }
 
 void init_keyboard() {
@@ -91,7 +88,29 @@ void delegate_keycode(u8int scancode) {
         case 38:
             print("l");
             break;
+        case 44:
+            print("z");
+            break;
+        case 45:
+            print("x");
+            break;
+        case 46:
+            print("c");
+            break;
+        case 47:
+            print("v");
+            break;
+        case 48:
+            print("b");
+            break;
+        case 49:
+            print("n");
+            break;
+        case 50:
+            print("m");
+            break;
         default:
+            print("");
             break;
     }
 }
