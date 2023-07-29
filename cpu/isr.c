@@ -114,7 +114,11 @@ static char *exception_messages[] = {
 
 void isr_handler(registers_t regs) {
     print("Received interrupt! ");
-    print(exception_messages[regs.int_no]);
+    char int_code[8];
+    int_to_ascii(regs.int_no, int_code);
+    print(int_code);
+    print(": ");
+    print(exception_messages[regs.int_no]); // Exception not getting initiallized correctly for some reason
     print("\n");
 }
 
