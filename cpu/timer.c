@@ -17,6 +17,10 @@ static void timer_callback(registers_t regs) {
     /* print("\n"); */
 }
 
+u32int get_tick() {
+    return tick;
+}
+
 void init_timer(u32int freq) {
     register_interrupt_handler(IRQ0, timer_callback);
 
