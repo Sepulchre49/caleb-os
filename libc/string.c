@@ -33,3 +33,9 @@ int strlen(char s[]) {
     while (s[i] != '\0') ++i;
     return i;
 }
+
+void append(char c, char s[]) {
+    int len = strlen(s);
+    s[len] = c;
+    s[len+1] = '\0';
+}
