@@ -39,3 +39,22 @@ void append(char c, char s[]) {
     s[len] = c;
     s[len+1] = '\0';
 }
+
+bool compare(char x[], char y[]) {
+    int lenX = strlen(x);
+    int lenY = strlen(y);
+    if (lenX != lenY) return false;
+
+    for (int i=0; i<lenX; i++) {
+        if (x[i] != y[i]) return false;
+    }
+    return true;
+}
+
+void substring(char src[], char dest[], int start, int end) {
+    if (strlen(src) < (start-end)) return;
+    for (int i=start; i<end; i++) {
+        dest[i-start] = src[i];
+    }
+    dest[end+1] = '\0';
+}
