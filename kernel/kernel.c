@@ -21,7 +21,16 @@ void handle_command(char command[]) {
         substring(command, arg, 5, len);
         print(arg);
         print("\n");
-    } else {
+    } 
+    else if (compare(command, "tick") == true) {
+        char timer_ascii[256] = {0};
+        int currTick = tick();
+        int_to_ascii(currTick, timer_ascii);
+        print("The value of the timer tick is: ");
+        print(timer_ascii);
+        print("\n");
+    }
+    else {
         char stripped[256] = {0};
         print("`");
         print(command);
