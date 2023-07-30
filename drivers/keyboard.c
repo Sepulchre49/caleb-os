@@ -109,6 +109,9 @@ void delegate_keycode(u8int scancode) {
         case 50:
             print("m");
             break;
+        case 57:
+            print(" ");
+            break;
         default:
             print("");
             break;
