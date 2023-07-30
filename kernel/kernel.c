@@ -15,13 +15,16 @@ void main() {
 void handle_command(char command[]) {
     char prefix[5] = {0};
     substring(command, prefix, 0, 4);
-    if (compare(prefix, "echo")) {
-        int len = strlen(command);
+    if (compare(prefix, "echo") == true) {
         char arg[256] = {0};
+        int len = strlen(command);
         substring(command, arg, 5, len);
         print(arg);
         print("\n");
     } else {
-        print("");
+        char stripped[256] = {0};
+        print("`");
+        print(command);
+        print("` is not yet implemented.\n");
     }
 }
