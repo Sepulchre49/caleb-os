@@ -11,3 +11,17 @@ void main() {
     init_keyboard();
     print("Welcome to CalebOS!\n");
 }
+
+void handle_command(char command[]) {
+    char prefix[5] = {0};
+    substring(command, prefix, 0, 4);
+    if (compare(prefix, "echo")) {
+        int len = strlen(command);
+        char arg[256] = {0};
+        substring(command, arg, 5, len);
+        print(arg);
+        print("\n");
+    } else {
+        print("");
+    }
+}
